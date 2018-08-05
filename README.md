@@ -1,1 +1,1 @@
-# Full-Stack-Open-2018
+# Repositorio Full Stack Open 2018 -kurssin tehtävien palautusta varten
