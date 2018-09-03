@@ -1,0 +1,24 @@
+title 0.6 Uusi muistiinpano SPA:ssa
+
+kayttaja->selain:
+note left of selain
+ollessaan sivulla https://fullstack-exampleapp.herokuapp.com/spa
+kayttaja kirjoittaa lomakkeeseen jotain
+ja painaa talleta-painiketta
+end note
+selain->palvelin: POST https://fullstack-exampleapp.herokuapp.com/new_note_spa
+note left of palvelin
+    selain luo spa.js-tiedostossa olevan lomakkeen tapahtumankasittelijan
+    avulla muistiinpanosta .json-muotoisen olion, lisaa sen
+    muistiinpanojen listalle, piirtaa sivulla nakyvan listan uudestaan ja
+    lahettaa muistiinpanon palvelimelle
+end note
+palvelin->selain: status 201, uusi muistiinpano luotu ja lahetetty palvelimelle
+note left of selain
+    selain nayttaa sivun,
+    joka sisaltaa uudelleenpiirretyn
+    muistiinpanojen listan
+end note
+
+
+

@@ -1,0 +1,28 @@
+title 0.5 Single page app
+
+kayttaja->selain:
+note left of selain
+kayttaja siirtyy osoitteeseen
+https://fullstack-exampleapp.herokuapp.com/spa
+end note
+selain->palvelin: GET https://fullstack-exampleapp.herokuapp.com/spa
+note left of palvelin
+  HTML-tiedosto lataa tyylitiedoston main.css
+  ja javascript-tiedoston spa.js
+end note
+palvelin->selain: status 200, sivun HTML-koodi
+selain->palvelin: GET https://fullstack-exampleapp.herokuapp.com/main.css
+palvelin->selain: status 200, sivun tyyliasettelu
+selain->palvelin: GET https://fullstack-exampleapp.herokuapp.com/spa.js
+note left of palvelin
+    javascript-tiedosto lataa data.json-tiedoston
+    ja muodostaa sen avulla muistiinpanojen listan
+end note
+palvelin->selain: status 200, muistiinpanolistan muodostusohjeet
+selain->palvelin: GET https://fullstack-exampleapp.herokuapp.com/data.json
+palvelin->selain: status 200, muistiinpanot noudettu
+note left of selain
+    selain nayttaa palvelimen palauttaman HTML:n,
+    joka listaa palvelimelta noudetut muistiinpanot
+end note
+
