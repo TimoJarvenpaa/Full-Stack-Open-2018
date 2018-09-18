@@ -1,86 +1,52 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-
-class App extends React.Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            hyvä: 0,
-            neutraali: 0,
-            huono: 0,
-            painotettuSumma: 0,
-            palautteitaYhteensä: 0
-        }
-    }
-
-    klikHyvä = () => {
-        this.setState({
-            hyvä : this.state.hyvä + 1,
-            painotettuSumma : this.state.painotettuSumma + 1,
-            palautteitaYhteensä : this.state.palautteitaYhteensä + 1
-        })
-    }
-
-    klikNeutraali = () => {
-        this.setState({
-            neutraali : this.state.neutraali + 1,
-            painotettuSumma : this.state.painotettuSumma + 0,
-            palautteitaYhteensä : this.state.palautteitaYhteensä + 1
-        })
-    }
-
-    klikHuono = () => {
-        this.setState({
-            huono : this.state.huono + 1,
-            painotettuSumma : this.state.painotettuSumma - 1,
-            palautteitaYhteensä : this.state.palautteitaYhteensä + 1
-        })
-    }
-
-    render() {
-        const keskiarvo = laskeKeskiarvo(this.state.painotettuSumma, this.state.palautteitaYhteensä)
-        const positiivisia = (this.state.hyvä / this.state.palautteitaYhteensä) * 100
-        return (
-            <div>
-                <h1>anna palautetta</h1>
-                <div>
-                    <Button
-                        handleClick={this.klikHyvä}
-                        text="hyvä"
-                    />
-                    <Button
-                        handleClick={this.klikNeutraali}
-                        text="neutraali"
-                    />
-                    <Button
-                        handleClick={this.klikHuono}
-                        text="huono"
-                    />
-                </div>
-                <h1>statistiikka</h1>
-                <Display text="hyvä" value={this.state.hyvä} />
-                <Display text="neutraali" value={this.state.neutraali} />
-                <Display text="huono" value={this.state.huono} />
-                <Display text="keskiarvo" value={keskiarvo.toFixed(1)} />
-                <div>positiivisia {positiivisia.toFixed(1)} %</div>
-            </div>
-        )
-    }
+ const App = () => {
+  const kurssi = 'Half Stack -sovelluskehitys'
+  const osa1 = 'Reactin perusteet'
+  const tehtavia1 = 10
+  const osa2 = 'Tiedonvälitys propseilla'
+  const tehtavia2 = 7
+  const osa3 = 'Komponenttien tila'
+  const tehtavia3 = 14
+   return (
+    <div>
+      <Otsikko kurssi={kurssi} />
+      <Sisalto osa1={osa1} tehtavia1={tehtavia1} osa2={osa2} tehtavia2={tehtavia2} osa3={osa3} tehtavia3={tehtavia3}/>
+      <Yhteensa tehtavia={tehtavia1 + tehtavia2 + tehtavia3} />
+    </div>
+  )
 }
-
-const Display = ({ text, value }) => <div>{text} {value}</div>
-
-const Button = ({ handleClick, text }) => (
-    <button onClick={handleClick}>
-        {text}
-    </button>
-)
-
-const laskeKeskiarvo = function(summa, lkm) {
-    return summa / lkm
+ const Otsikko = (props) => {
+    return (
+        <div>
+            <h1>{props.kurssi}</h1>
+        </div>
+    )
 }
-
-ReactDOM.render(
-    <App />,
-    document.getElementById('root')
+ const Osa = (props) => {
+    return (
+        <div>
+            <p>{props.kuvaus} {props.tehtavia}</p>
+        </div>
+    )
+}
+ const Sisalto = (props) => {
+  return (
+      <div>
+          <Osa kuvaus={props.osa1} tehtavia={props.tehtavia1}/>
+          <Osa kuvaus={props.osa2} tehtavia={props.tehtavia2}/>
+          <Osa kuvaus={props.osa3} tehtavia={props.tehtavia3}/>   
+      </div>
+  )
+}
+ const Yhteensa = (props) => {
+    return (
+        <div>
+            <p>yhteensä {props.tehtavia} tehtävää</p>
+        </div>
+    )
+  }
+ ReactDOM.render(
+  <App />,
+  document.getElementById('root')
 )
