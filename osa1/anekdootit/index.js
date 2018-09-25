@@ -5,35 +5,49 @@ class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      selected: 0,
-      pisteet: [0, 0, 0, 0, 0, 0]
+      selectedIndex: 0,
+      pisteet: [0, 0, 0, 0, 0, 0],
+      mostVotesIndex: 0
     }
   }
 
   next = () => {
       this.setState({
-          selected : this.randomNumber(0, anecdotes.length - 1)
+          selectedIndex : this.randomNumber(0, anecdotes.length - 1)
       })
   }
 
   vote = () => {
-      const i = this.state.selected
+      const i = this.state.selectedIndex
       const kopio = [...this.state.pisteet]
       kopio[i] += 1
       this.setState({
           pisteet : kopio
-      })
+      }, this.mostVotes )
   }
 
   randomNumber = (min, max) => {
       return Math.floor(Math.random() * (max - min + 1)) + min
   }
 
+  mostVotes = () => {
+    var k;
+    var mostVotes = 0;
+    for (k = 0; k < this.state.pisteet.length; k++) {
+        if (this.state.pisteet[k] > this.state.pisteet[mostVotes]) {
+            mostVotes = k
+        }
+    }
+    this.setState({
+        mostVotesIndex : mostVotes
+    })
+}
+
   render() {
     return (
       <div>
-        <p>{this.props.anecdotes[this.state.selected]}</p>
-        <p>has {this.state.pisteet[this.state.selected]} votes</p>
+        <p>{this.props.anecdotes[this.state.selectedIndex]}</p>
+        <p>has {this.state.pisteet[this.state.selectedIndex]} votes</p>
         <Button
             handleClick={this.vote}
             text="vote"
@@ -42,6 +56,9 @@ class App extends React.Component {
             handleClick={this.next}
             text="next anecdote"
         />
+        <h1>anecdote with the most votes:</h1>
+        <p>{this.props.anecdotes[this.state.mostVotesIndex]}</p>
+        <p>has {this.state.pisteet[this.state.mostVotesIndex]} votes</p>
       </div>
     )
   }
