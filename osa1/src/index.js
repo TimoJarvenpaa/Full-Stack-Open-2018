@@ -38,8 +38,6 @@ class App extends React.Component {
     }
 
     render() {
-        const keskiarvo = laskeKeskiarvo(this.state.painotettuSumma, this.state.palautteitaYhteensä)
-        const positiivisia = (this.state.hyvä / this.state.palautteitaYhteensä) * 100
         return (
             <div>
                 <h1>anna palautetta</h1>
@@ -57,18 +55,13 @@ class App extends React.Component {
                         text="huono"
                     />
                 </div>
-                <h1>statistiikka</h1>
-                <Display text="hyvä" value={this.state.hyvä} />
-                <Display text="neutraali" value={this.state.neutraali} />
-                <Display text="huono" value={this.state.huono} />
-                <Display text="keskiarvo" value={keskiarvo.toFixed(1)} />
-                <div>positiivisia {positiivisia.toFixed(1)} %</div>
+                <Statistics state={this.state} />
             </div>
         )
     }
 }
 
-const Display = ({ text, value }) => <div>{text} {value}</div>
+const Statistic = ({ text, value }) => <div>{text} {value}</div>
 
 const Button = ({ handleClick, text }) => (
     <button onClick={handleClick}>
@@ -76,8 +69,25 @@ const Button = ({ handleClick, text }) => (
     </button>
 )
 
+const Statistics = ({ state }) => {
+    return (
+        <div>
+            <h1>statistiikka</h1>
+            <Statistic text="hyvä" value={state.hyvä} />
+            <Statistic text="neutraali" value={state.neutraali} />
+            <Statistic text="huono" value={state.huono} />
+            <Statistic text="keskiarvo" value={laskeKeskiarvo(state.painotettuSumma, state.palautteitaYhteensä)} />
+            <Statistic text="positiivisia" value={laskePositiivistenOsuus(state.hyvä, state.palautteitaYhteensä)} />
+        </div>
+    )
+}
+
 const laskeKeskiarvo = function(summa, lkm) {
-    return summa / lkm
+    return (summa / lkm).toFixed(1)
+}
+
+const laskePositiivistenOsuus = function(hyviä, yhteensä) {
+    return ((hyviä / yhteensä) * 100).toFixed(1) + ' %'
 }
 
 ReactDOM.render(
