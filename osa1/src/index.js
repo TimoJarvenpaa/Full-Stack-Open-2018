@@ -45,7 +45,14 @@ class App extends React.Component {
     }
 }
 
-const Statistic = ({ text, value }) => <div>{text} {value}</div>
+const Statistic = ({ text, value }) => {
+    return (
+        <tr>
+            <td> {text} </td>
+            <td> {value} </td>
+        </tr>
+    )
+}
 
 const Button = ({ handleClick, text }) => (
     <button onClick={handleClick}>
@@ -64,11 +71,15 @@ const Statistics = ({ state }) => {
     return (
         <div>
             <h1>statistiikka</h1>
-            <Statistic text="hyvä" value={state.hyvä} />
-            <Statistic text="neutraali" value={state.neutraali} />
-            <Statistic text="huono" value={state.huono} />
-            <Statistic text="keskiarvo" value={laskeKeskiarvo(state.painotettuSumma, state.palautteitaYhteensä)} />
-            <Statistic text="positiivisia" value={laskePositiivistenOsuus(state.hyvä, state.palautteitaYhteensä)} />
+            <table>
+                <tbody>
+                    <Statistic text="hyvä" value={state.hyvä} />
+                    <Statistic text="neutraali" value={state.neutraali} />
+                    <Statistic text="huono" value={state.huono} />
+                    <Statistic text="keskiarvo" value={laskeKeskiarvo(state.painotettuSumma, state.palautteitaYhteensä)} />
+                    <Statistic text="positiivisia" value={laskePositiivistenOsuus(state.hyvä, state.palautteitaYhteensä)} />
+                </tbody>
+            </table>
         </div>
     )
 }
