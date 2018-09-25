@@ -70,6 +70,13 @@ const Button = ({ handleClick, text }) => (
 )
 
 const Statistics = ({ state }) => {
+    if (state.palautteitaYhteensä === 0) {
+        return (
+            <div>
+                <p>ei yhtään palautetta annettu</p>
+            </div>
+        )
+    }
     return (
         <div>
             <h1>statistiikka</h1>
