@@ -13,28 +13,12 @@ class App extends React.Component {
         }
     }
 
-    klikHyvä = () => {
-        this.setState({
-            hyvä : this.state.hyvä + 1,
-            painotettuSumma : this.state.painotettuSumma + 1,
-            palautteitaYhteensä : this.state.palautteitaYhteensä + 1
-        })
-    }
-
-    klikNeutraali = () => {
-        this.setState({
-            neutraali : this.state.neutraali + 1,
-            painotettuSumma : this.state.painotettuSumma + 0,
-            palautteitaYhteensä : this.state.palautteitaYhteensä + 1
-        })
-    }
-
-    klikHuono = () => {
-        this.setState({
-            huono : this.state.huono + 1,
-            painotettuSumma : this.state.painotettuSumma - 1,
-            palautteitaYhteensä : this.state.palautteitaYhteensä + 1
-        })
+    klik = (id, value) => () => {
+            this.setState({
+                [id] : this.state[id] + 1,
+                painotettuSumma : this.state.painotettuSumma + value,
+                palautteitaYhteensä : this.state.palautteitaYhteensä + 1
+            })
     }
 
     render() {
@@ -43,15 +27,15 @@ class App extends React.Component {
                 <h1>anna palautetta</h1>
                 <div>
                     <Button
-                        handleClick={this.klikHyvä}
+                        handleClick={this.klik('hyvä', 1)}
                         text="hyvä"
                     />
                     <Button
-                        handleClick={this.klikNeutraali}
+                        handleClick={this.klik('neutraali', 0)}
                         text="neutraali"
                     />
                     <Button
-                        handleClick={this.klikHuono}
+                        handleClick={this.klik('huono', -1)}
                         text="huono"
                     />
                 </div>
