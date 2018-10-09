@@ -19,6 +19,11 @@ const App = () => {
         nimi: 'Komponenttien tila',
         tehtavia: 14,
         id: 3
+      },
+      {
+        nimi: 'Redux',
+        tehtavia: 7,
+        id: 4
       }
     ]
   }
@@ -53,12 +58,23 @@ const Osa = ({ osa }) => {
     )
 }
 
-const Sisalto = ({osat}) => {
+const Sisalto = ({ osat }) => {
   return (
     <div>
-      {osat.map(osa => <Osa key={osa.id} osa={osa} />)}  
+      {osat.map(osa => <Osa key={osa.id} osa={osa} />)}
+      {<Yhteensa osat={osat} />}
     </div>
   )
+}
+
+const Yhteensa = ({ osat }) => {
+    const tehtavia = osat.reduce((acc, currValue) => {
+        return acc + currValue.tehtavia;
+    }, 0);
+
+    return (
+        <p>yhteensä {tehtavia} tehtävää</p>
+    )
 }
 
 ReactDOM.render(
