@@ -16,25 +16,32 @@ class App extends React.Component {
     event.preventDefault()
     const personObject = {
         name: this.state.newName,
+    }
+
+      if (this.state.persons.filter(person => person.name === personObject.name).length === 0){
+        const persons = this.state.persons.concat(personObject)
+    
+        this.setState({
+          persons,
+          newName: ''
+        })
       }
-    
-      const persons = this.state.persons.concat(personObject)
-    
-      this.setState({
-        persons,
-        newName: ''
-    })
+      
+      else {
+        alert(personObject.name + ' löytyy jo puhelinluettelosta')
+        this.setState({
+          newName: ''
+        })
+      }
   }
 
   handleFormChange = (event) => {
     this.setState({ newName: event.target.value })
-}
+  }
 
   render() {
     return (
       <div>
-        debug: {this.state.newName}
-        
         <h2>Puhelinluettelo</h2>
 
         <form onSubmit={this.addPerson}>
