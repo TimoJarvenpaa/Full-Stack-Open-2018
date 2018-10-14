@@ -59,49 +59,65 @@ class App extends React.Component {
     return (
       <div>
         <h1>Puhelinluettelo</h1>
-
-        <div>
-          rajaa näytettäviä:
-            <input 
-              value={this.state.filter} 
-              onChange={this.handleFilterChange}
-            />
-        </div>
+        <FilterDisplayedNames App={this} />
 
         <h2>Lisää uusi</h2>
-        <form onSubmit={this.addPerson}>
+        <AddNewPerson App={this} />
+
+        <h2>Numerot</h2>
+        <CreateNumbersTable App={this} />
+      </div>
+    )
+  }
+}
+
+const AddNewPerson = ({App}) => {
+  return (
+    <form onSubmit={App.addPerson}>
           <div>
             nimi:
               <input
-                value={this.state.newName} 
-                onChange={this.handleNameChange}
+                value={App.state.newName} 
+                onChange={App.handleNameChange}
               />
           </div>
           <div>
             numero:
               <input
-                value={this.state.newNumber} 
-                onChange={this.handleNumberChange}
+                value={App.state.newNumber} 
+                onChange={App.handleNumberChange}
               />
           </div>
           <div>
             <button type="submit">lisää</button>
           </div>
         </form>
+  )
+}
 
-        <h2>Numerot</h2>
+const FilterDisplayedNames = ({App}) => {
+  return (
+    <div>
+      rajaa näytettäviä:
+        <input 
+          value={App.state.filter} 
+          onChange={App.handleFilterChange}
+        />
+    </div>
+  )
+}
 
-        <table>
-          <tbody>
-            {this.state.persons
-              .filter(person => person.name.toUpperCase().includes(this.state.filter.toUpperCase()))
-              .map(person => <Person key={person.name} person={person} />)
-            }
-          </tbody>
-        </table>
-      </div>
-    )
-  }
+const CreateNumbersTable = ({App}) => {
+  return (
+    <table>
+      <tbody>
+        {App.state.persons
+          .filter(person => person.name.toUpperCase().includes(App.state.filter.toUpperCase()))
+          .map(person => <Person key={person.name} person={person} />)
+        }
+      </tbody>
+    </table>
+  )
 }
 
 export default App
