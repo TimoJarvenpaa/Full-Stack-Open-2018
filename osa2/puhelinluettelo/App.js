@@ -6,9 +6,10 @@ class App extends React.Component {
     super(props)
     this.state = {
       persons: [
-        { name: 'Arto Hellas' }
+        { name: 'Arto Hellas', number: '040-123456' }
       ],
-      newName: ''
+      newName: '',
+      newNumber: ''
     }
   }
 
@@ -16,6 +17,7 @@ class App extends React.Component {
     event.preventDefault()
     const personObject = {
         name: this.state.newName,
+        number: this.state.newNumber
     }
 
       if (this.state.persons.filter(person => person.name === personObject.name).length === 0){
@@ -23,20 +25,26 @@ class App extends React.Component {
     
         this.setState({
           persons,
-          newName: ''
+          newName: '',
+          newNumber: ''
         })
       }
       
       else {
         alert(personObject.name + ' löytyy jo puhelinluettelosta')
         this.setState({
-          newName: ''
+          newName: '',
+          newNumber: ''
         })
       }
   }
 
-  handleFormChange = (event) => {
+  handleNameChange = (event) => {
     this.setState({ newName: event.target.value })
+  }
+
+  handleNumberChange = (event) => {
+    this.setState({ newNumber: event.target.value })
   }
 
   render() {
@@ -49,7 +57,14 @@ class App extends React.Component {
             nimi:
               <input
                 value={this.state.newName} 
-                onChange={this.handleFormChange}
+                onChange={this.handleNameChange}
+              />
+          </div>
+          <div>
+            numero:
+              <input
+                value={this.state.newNumber} 
+                onChange={this.handleNumberChange}
               />
           </div>
           <div>
