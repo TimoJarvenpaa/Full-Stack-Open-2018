@@ -14,6 +14,10 @@ class App extends React.Component {
     this.setState({ filter: event.target.value })
   }
 
+  handleClick = (input) => () => {
+    this.setState({ filter: input })
+  }
+
   componentDidMount() {
     axios
       .get('https://restcountries.eu/rest/v2/all')
@@ -66,7 +70,7 @@ const DisplayCountries = ({App}) => {
     return(
       <div>
         {countryObject
-          .map(country => <p key={country.name}>{country.name}</p>)
+          .map(country => <p key={country.name} onClick={App.handleClick(country.name)}>{country.name}</p>)
         }
       </div>
     )
