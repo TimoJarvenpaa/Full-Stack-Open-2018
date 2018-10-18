@@ -1,5 +1,5 @@
 import React from 'react';
-import axios from 'axios';
+import personService from './services/persons';
 import Person from './components/Person';
 
 class App extends React.Component {
@@ -13,6 +13,14 @@ class App extends React.Component {
     }
   }
 
+  componentDidMount() {
+    personService
+      .getAll()
+      .then(response => {
+        this.setState({ persons: response })
+      })
+  }
+
   addPerson = (event) => {
     event.preventDefault()
     const personObject = {
@@ -22,11 +30,11 @@ class App extends React.Component {
 
       if (this.state.persons.filter(person => person.name === personObject.name).length === 0){
     
-        axios
-          .post('http://localhost:3001/persons', personObject)
-          .then(response => {
+        personService
+          .create(personObject)
+          .then(newPerson => {
             this.setState({
-              persons: this.state.persons.concat(response.data),
+              persons: this.state.persons.concat(newPerson),
               newName: '',
               newNumber: ''
             })
@@ -52,14 +60,6 @@ class App extends React.Component {
 
   handleFilterChange = (event) => {
     this.setState({ filter: event.target.value })
-  }
-
-  componentDidMount() {
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
-        this.setState({ persons: response.data })
-      })
   }
 
   render() {
