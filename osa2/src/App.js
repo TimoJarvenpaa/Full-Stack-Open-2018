@@ -42,11 +42,26 @@ class App extends React.Component {
       }
       
       else {
-        alert(personObject.name + ' löytyy jo puhelinluettelosta')
-        this.setState({
-          newName: '',
-          newNumber: ''
-        })
+        if (window.confirm(personObject.name + ' löytyy jo puhelinluettelosta. Korvataanko vanha numero?')){
+          const id = this.state.persons.find(p => p.name === personObject.name).id
+          personService
+            .update(id, personObject)
+            .then(changedPerson => {
+              const persons = this.state.persons.filter(p => p.id !== id)
+              this.setState({
+                persons: persons.concat(changedPerson)
+              })
+            })
+            .catch(error => {
+              alert(`${personObject.name} on jo valitettavasti poistettu palvelimelta`)
+              this.setState({ persons: this.state.persons.filter(p => p.id !== id) })
+            })
+        } else {
+          this.setState({
+            newName: '',
+            newNumber: ''
+          })
+        }
       }
   }
 
