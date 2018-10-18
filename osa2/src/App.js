@@ -1,6 +1,7 @@
 import React from 'react';
 import personService from './services/persons';
 import Person from './components/Person';
+import './index.css'
 
 class App extends React.Component {
   constructor(props) {
@@ -9,7 +10,8 @@ class App extends React.Component {
       persons: [],
       newName: '',
       newNumber: '',
-      filter: ''
+      filter: '',
+      message: null
     }
   }
 
@@ -36,8 +38,12 @@ class App extends React.Component {
             this.setState({
               persons: this.state.persons.concat(newPerson),
               newName: '',
-              newNumber: ''
+              newNumber: '',
+              message: `${personObject.name} on lisätty puhelinluetteloon.`
             })
+            setTimeout(() => {
+              this.setState({message: null})
+            }, 3000)
           })
       }
       
@@ -49,12 +55,25 @@ class App extends React.Component {
             .then(changedPerson => {
               const persons = this.state.persons.filter(p => p.id !== id)
               this.setState({
-                persons: persons.concat(changedPerson)
+                persons: persons.concat(changedPerson),
+                newName: '',
+                newNumber: '',
+                message: `Henkilön ${personObject.name} puhelinnumero on nyt päivitetty.`
               })
+              setTimeout(() => {
+                this.setState({message: null})
+              }, 3000)
             })
             .catch(error => {
-              alert(`${personObject.name} on jo valitettavasti poistettu palvelimelta`)
-              this.setState({ persons: this.state.persons.filter(p => p.id !== id) })
+              this.setState({
+                persons: this.state.persons.filter(p => p.id !== id),
+                newName: '',
+                newNumber: '',
+                message: `${personObject.name} on jo valitettavasti poistettu palvelimelta.`
+              })
+              setTimeout(() => {
+                this.setState({message: null})
+              }, 3000)
             })
         } else {
           this.setState({
@@ -67,13 +86,17 @@ class App extends React.Component {
 
   removePerson = (id) => () => {
     const p = this.state.persons.find(p => p.id === id)
-    if (window.confirm(`Poistetaanko ${p.name}?`)){
+    if (window.confirm(`Poistetaanko ${p.name} puhelinluettelosta?`)){
       personService
         .remove(id)
         .then(response => {
           this.setState({
-            persons: this.state.persons.filter(p => p.id !== id)
+            persons: this.state.persons.filter(p => p.id !== id),
+            message: `${p.name} on poistettu puhelinluettelosta.`
           })
+          setTimeout(() => {
+            this.setState({message: null})
+          }, 3000)
         })
     }
   }
@@ -94,6 +117,9 @@ class App extends React.Component {
     return (
       <div>
         <h1>Puhelinluettelo</h1>
+
+        <Notification message={this.state.message}/>
+
         <FilterDisplayedNames App={this} />
 
         <h2>Lisää uusi</h2>
@@ -158,6 +184,17 @@ const CreateNumbersTable = ({App}) => {
         }
       </tbody>
     </table>
+  )
+}
+
+const Notification = ({ message }) => {
+  if (message === null) {
+    return null
+  }
+  return (
+    <div className="notification">
+      {message}
+    </div>
   )
 }
 
