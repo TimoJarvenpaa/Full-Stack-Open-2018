@@ -21,13 +21,16 @@ class App extends React.Component {
     }
 
       if (this.state.persons.filter(person => person.name === personObject.name).length === 0){
-        const persons = this.state.persons.concat(personObject)
     
-        this.setState({
-          persons,
-          newName: '',
-          newNumber: ''
-        })
+        axios
+          .post('http://localhost:3001/persons', personObject)
+          .then(response => {
+            this.setState({
+              persons: this.state.persons.concat(response.data),
+              newName: '',
+              newNumber: ''
+            })
+          })
       }
       
       else {
