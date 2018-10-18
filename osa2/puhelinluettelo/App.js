@@ -68,12 +68,23 @@ class App extends React.Component {
               this.setState({
                 persons: this.state.persons.filter(p => p.id !== id),
                 newName: '',
-                newNumber: '',
-                message: `${personObject.name} on jo valitettavasti poistettu palvelimelta.`
+                newNumber: ''
               })
-              setTimeout(() => {
-                this.setState({message: null})
-              }, 3000)
+              if (window.confirm(`${personObject.name} on jo valitettavasti poistettu palvelimelta. Luodaanko uusi yhteystieto?`)){
+                personService
+                  .create(personObject)
+                  .then(newPerson => {
+                    this.setState({
+                      persons: this.state.persons.concat(newPerson),
+                      newName: '',
+                      newNumber: '',
+                      message: `${personObject.name} on lisätty puhelinluetteloon.`
+                    })
+                    setTimeout(() => {
+                      this.setState({message: null})
+                    }, 3000)
+                  })
+              }
             })
         } else {
           this.setState({
