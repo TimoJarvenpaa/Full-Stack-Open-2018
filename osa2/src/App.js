@@ -50,6 +50,19 @@ class App extends React.Component {
       }
   }
 
+  removePerson = (id) => () => {
+    const p = this.state.persons.find(p => p.id === id)
+    if (window.confirm(`Poistetaanko ${p.name}?`)){
+      personService
+        .remove(id)
+        .then(response => {
+          this.setState({
+            persons: this.state.persons.filter(p => p.id !== id)
+          })
+        })
+    }
+  }
+
   handleNameChange = (event) => {
     this.setState({ newName: event.target.value })
   }
@@ -81,24 +94,24 @@ class App extends React.Component {
 const AddNewPerson = ({App}) => {
   return (
     <form onSubmit={App.addPerson}>
-          <div>
-            nimi:
-              <input
-                value={App.state.newName} 
-                onChange={App.handleNameChange}
-              />
-          </div>
-          <div>
-            numero:
-              <input
-                value={App.state.newNumber} 
-                onChange={App.handleNumberChange}
-              />
-          </div>
-          <div>
-            <button type="submit">lisää</button>
-          </div>
-        </form>
+      <div>
+        nimi:
+          <input
+            value={App.state.newName} 
+            onChange={App.handleNameChange}
+          />
+      </div>
+      <div>
+        numero:
+          <input
+            value={App.state.newNumber} 
+            onChange={App.handleNumberChange}
+          />
+      </div>
+      <div>
+        <button type="submit">lisää</button>
+      </div>
+    </form>
   )
 }
 
@@ -120,7 +133,13 @@ const CreateNumbersTable = ({App}) => {
       <tbody>
         {App.state.persons
           .filter(person => person.name.toUpperCase().includes(App.state.filter.toUpperCase()))
-          .map(person => <Person key={person.name} person={person} />)
+          .map(person =>
+            <Person 
+              key={person.name}
+              person={person}
+              App={App}
+            />
+          )
         }
       </tbody>
     </table>
